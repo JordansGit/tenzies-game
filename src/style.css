@@ -45,8 +45,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background: white;
 }
 
 h2.die-num {
@@ -89,4 +87,8 @@ button {
   border: none;
   padding: 10px 34px;
   color: #FFFFFF;
+}
+
+.die:hover, button:hover {
+  cursor: pointer;
 }
