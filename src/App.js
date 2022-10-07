@@ -8,6 +8,8 @@ function App() {
 
   const [completed, setCompleted] = React.useState(false)
 
+  const [count, setCount] = React.useState(0)
+
   React.useEffect(() => {
     let winningNumber = dice[0].value
     const winningState = dice.every(die => die.isHeld && die.value === winningNumber);
@@ -54,11 +56,13 @@ function App() {
         ? die
         : generateNewDie()
     }))
+    setCount(prevCount => prevCount + 1)
   }
 
   function newGame() {
     setDice(allNewDice())
     setCompleted(false)
+    setCount(0)
   }
 
   return (
@@ -66,6 +70,9 @@ function App() {
       {completed && <Confetti />}
       <h1>Tenzies</h1>
       <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      <h2>{completed === true ? `You Won in ${count} Rolls` : 
+        count === 0 ? 'Rolls Taken: ' : `Rolls Taken: ${count}`}
+      </h2>
       <div className="dice-container">
         {dieElements}
       </div>

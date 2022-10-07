@@ -36,7 +36,7 @@ main {
   grid-template-columns: 36px 36px 36px 36px 36px;
   /* grid-template: auto auto / repeat(5, 1fr) -> the scrimba tut guy has this */ 
   gap: 20px;
-  margin: 20px 0;
+  margin: 0 0 20px 0;
 }
 
 .die {
@@ -55,6 +55,14 @@ h2.die-num {
   margin: 0;
 }*/
 
+h2 {
+  margin: 5px 0 10px 0;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: -0.03em;
+  color: #2B283A;
+}
+
 .die-img {
   width: 36px;
   height: 36px;
@@ -66,7 +74,7 @@ h1 {
   line-height: 30px;
   letter-spacing: -0.03em;
   color: #2B283A;
-  margin: 35px 0 3px 0;
+  margin: 10px 0 3px 0;
 
 }
 
