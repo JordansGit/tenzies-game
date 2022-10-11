@@ -10,9 +10,10 @@ function App() {
 
   const [count, setCount] = React.useState(0)
 
-  // when winning state = true / completed = true, stop the interval timer
-
   const [seconds, setSeconds] = React.useState(0)
+
+  const [lowestRolls, setLowestRolls] = React.useState(JSON.parse(localStorage.getItem('lowestRollsCount')) || '')
+
   /* this runs the interval on page load 
 
   React.useEffect(() => {
@@ -22,13 +23,13 @@ function App() {
     return () => clearInterval(interval)
   }, []) */
 
+  // if local storage is empty, set current number of rolls to best rolls. 
+  
+
   const timer = () => {
-    const interval = setInterval(() => {
+    setInterval(() => {
       setSeconds(prevSeconds => prevSeconds + 1)
     }, 1000)
-    if (completed === true) {
-      clearInterval(interval)
-    }
   }
 
   React.useEffect(() => {
@@ -37,7 +38,10 @@ function App() {
 
     if (winningState) {
       setCompleted(true)
-      clearInterval(timer)
+      if (lowestRolls === '' || lowestRolls > count) {
+        setLowestRolls(count)
+        localStorage.setItem('lowestRollsCount', JSON.stringify(lowestRolls))
+      }
     }
   }, [dice])
 
@@ -99,8 +103,8 @@ function App() {
       {completed && <Confetti />}
       <h1>Tenzies</h1>
       <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
-      <h3>Your Best Time: </h3>
-      <h2>Time Taken: {seconds}</h2>{/*{completed && `${finishTime} seconds`}*/}
+      <h3>Your Lowest rolls completed: {lowestRolls}</h3>
+      <h2>Time Taken: {seconds}</h2>
       <h2>{completed === true ? `You Won in ${count} Rolls` : 
         count === 0 ? 'Rolls Taken: ' : `Rolls Taken: ${count}`}
       </h2>
@@ -114,6 +118,18 @@ function App() {
 }
 
 export default App;
+
+/* 
+To Do: 
+  stop the timer when game is completed. 
+  save that timer to local storage. 
+    if new timer is faster than 1 in local storage, save the new 1 to local storage. 
+    get local storage timer and display it in best time text. 
+
+*/
+
+
+
 
 /*
 Learning Notes: 
