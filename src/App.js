@@ -10,12 +10,34 @@ function App() {
 
   const [count, setCount] = React.useState(0)
 
+  // when winning state = true / completed = true, stop the interval timer
+
+  const [seconds, setSeconds] = React.useState(0)
+  /* this runs the interval on page load 
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds(prevSeconds => prevSeconds + 1)
+    }, 1000)
+    return () => clearInterval(interval)
+  }, []) */
+
+  const timer = () => {
+    const interval = setInterval(() => {
+      setSeconds(prevSeconds => prevSeconds + 1)
+    }, 1000)
+    if (completed === true) {
+      clearInterval(interval)
+    }
+  }
+
   React.useEffect(() => {
     let winningNumber = dice[0].value
     const winningState = dice.every(die => die.isHeld && die.value === winningNumber);
 
     if (winningState) {
       setCompleted(true)
+      clearInterval(timer)
     }
   }, [dice])
 
@@ -44,6 +66,9 @@ function App() {
         ? {...die, isHeld: !die.isHeld}
         : die
     }))
+    if (seconds === 0) {
+      timer() // only run the timer function if seconds = 0, aka if it hasn't started yet
+    }
   }
 
   const dieElements = dice.map(die => (
@@ -57,12 +82,16 @@ function App() {
         : generateNewDie()
     }))
     setCount(prevCount => prevCount + 1)
+    if (seconds === 0) {
+      timer() // only run the timer function if seconds = 0, aka if it hasn't started yet
+    }
   }
 
   function newGame() {
     setDice(allNewDice())
     setCompleted(false)
     setCount(0)
+    setSeconds(0)
   }
 
   return (
@@ -70,9 +99,12 @@ function App() {
       {completed && <Confetti />}
       <h1>Tenzies</h1>
       <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      <h3>Your Best Time: </h3>
+      <h2>Time Taken: {seconds}</h2>{/*{completed && `${finishTime} seconds`}*/}
       <h2>{completed === true ? `You Won in ${count} Rolls` : 
         count === 0 ? 'Rolls Taken: ' : `Rolls Taken: ${count}`}
       </h2>
+
       <div className="dice-container">
         {dieElements}
       </div>
